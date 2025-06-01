@@ -1,0 +1,27 @@
+{
+  "name": "mern_blog_application",
+  "version": "1.0.0",
+  "description": "WEB DEVELOPMENT INTERNSHIP PROJECTS",
+  "homepage": "https://github.com/chinnukarthik/CODING-SAMURAI-INTERNSHIP-TASK#readme",
+  "bugs": {
+    "url": "https://github.com/chinnukarthik/CODING-SAMURAI-INTERNSHIP-TASK/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chinnukarthik/CODING-SAMURAI-INTERNSHIP-TASK.git"
+  },
+  "license": "ISC",
+  "author": "karthik",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1",
+    "nodemon": "^3.1.10"
+  }
+}
