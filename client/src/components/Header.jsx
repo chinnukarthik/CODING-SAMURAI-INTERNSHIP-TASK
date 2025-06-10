@@ -30,10 +30,14 @@ function Header() {
           className="hidden lg:inline"
         />
       </form>
-      <Button className="  lg:hidden text-gray-400" color="alternative" pill>
+      <Button
+        className="  lg:hidden text-gray-400"
+        color="alternative"
+        pill="true"
+      >
         <AiOutlineSearch />
       </Button>
-      <div className="flex gap-2 md:order-2" pill>
+      <div className="flex gap-2 md:order-2" pill="true">
         <Button color="alternative" className="hidden sm:inline">
           <FaMoon />
         </Button>

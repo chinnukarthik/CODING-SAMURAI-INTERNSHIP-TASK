@@ -1,7 +1,43 @@
-import { Button, Label, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  // Input in form
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+  // Handling form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password) {
+      return setError("Please fill the fileds");
+    }
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch("api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        return setError(data.message);
+      }
+      if (res.ok) {
+        navigate("/sign-in");
+      }
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 gap-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center">
@@ -18,36 +54,51 @@ function SignUp() {
         </div>
         {/* Right section */}
         <div className="flex-1 ">
-          <form action="" className="flex flex-col gap-3">
+          <form
+            action=""
+            className="flex flex-col gap-3"
+            onSubmit={handleSubmit}
+          >
             <div className="">
-              <Label for="username">Username</Label>
+              <Label>Username</Label>
               <TextInput
                 type="text"
                 placeholder="Username"
                 id="username"
+                onChange={handleChange}
               ></TextInput>
             </div>
             <div className="">
-              <Label for="email">Your Email</Label>
+              <Label>Your Email</Label>
               <TextInput
                 type="email"
                 placeholder="Email"
                 id="email"
+                onChange={handleChange}
               ></TextInput>
             </div>
             <div className="">
-              <Label for="Password">Enter Password</Label>
+              <Label>Enter Password</Label>
               <TextInput
                 type="password"
                 placeholder="Password"
                 id="password"
+                onChange={handleChange}
               ></TextInput>
             </div>
             <Button
               type="submit"
-              class=" w-full text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              disabled={loading}
+              className=" w-full text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >
-              Sign Up
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading...</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
           <div className="flex text-sm mt-2 gap-2">
@@ -56,6 +107,11 @@ function SignUp() {
               Sign In
             </Link>
           </div>
+          {error && (
+            <Alert className="mt-5" color="failure">
+              {error}
+            </Alert>
+          )}
         </div>
       </div>
     </div>
