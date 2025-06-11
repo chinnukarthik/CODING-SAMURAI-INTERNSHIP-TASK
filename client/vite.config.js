@@ -13,5 +13,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [tailwindcss(), react(), flowbiteReact()],
+  plugins: [tailwindcss(), flowbiteReact(),react(), ],
 });
