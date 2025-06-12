@@ -45,9 +45,7 @@ function Header() {
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2" pill="true">
-        <Button color="alternative" className="hidden sm:inline">
-          <FaMoon />
-        </Button>
+       
       { currentUser ? (
         <Dropdown
         arrowIcon={false}
