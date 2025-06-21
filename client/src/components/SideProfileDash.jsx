@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateStart,
@@ -21,7 +22,7 @@ import {
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function SideProfileDash() {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateuserError, setUpdateUserError] = useState(null);
@@ -132,10 +133,22 @@ export default function SideProfileDash() {
         <Button
           type="submit"
           outline
+          disabled={loading}
           className="bg-linear-to-t from-sky-500 to-indigo-500 hover:opacity-90 text-white font-semibold py-2 px-4 rounded"
         >
-          Update Profile
+          {loading ? "Loading..." : "Update Profile"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              outline
+              className="w-full bg-gradient-to-r from-fuchsia-500 to-pink-400 text-white hover:opacity-90 "
+            >
+              Create a Post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-700 flex justify-between items-center mt-4">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">

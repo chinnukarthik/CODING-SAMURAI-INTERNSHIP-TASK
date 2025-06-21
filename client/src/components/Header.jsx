@@ -30,10 +30,10 @@ function Header() {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        useDispatch(signOutSuccess());
+        dispatch(signOutSuccess());
       }
-    } catch (error) {
-      console.log(error.message);
+    } catch (err) {
+      console.log(err.message);
     }
   };
   return (
