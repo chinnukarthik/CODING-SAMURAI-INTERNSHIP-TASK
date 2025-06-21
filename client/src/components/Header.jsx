@@ -14,11 +14,28 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
-import {useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signOutSuccess } from "../redux/user/userSlice";
 
 function Header() {
   const path = useLocation().pathname;
-  const {currentUser} = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        useDispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <Navbar className="border-b-2">
       <Link
@@ -45,41 +62,34 @@ function Header() {
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2" pill="true">
-       
-      { currentUser ? (
-        <Dropdown
-        arrowIcon={false}
-        inline={true}
-        label={
-          <Avatar alt="User" className="" rounded/>
-        }
-        >
-          <DropdownHeader>
-            <span className="block text-sm">
-              {currentUser.name}
-            </span>
-            <span className="block truncate text-sm font-medium">
-              {currentUser.email}
-            </span>
-          </DropdownHeader>
-         
-          <DropdownItem>
-             <Link to="/dashboard?tab=profile">Profile</Link>
-          </DropdownItem>
-          <DropdownDivider/>
-          <DropdownItem>Sign Out</DropdownItem>
-          
-        </Dropdown>
-      ):(
-        <Link to="/sign-up">
-          <Button outline className="">
-            Sign Up
-          </Button>
-        </Link>
-      )}
-       
-      
-      <NavbarToggle />
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline={true}
+            label={<Avatar alt="User" className="" rounded />}
+          >
+            <DropdownHeader>
+              <span className="block text-sm">{currentUser.name}</span>
+              <span className="block truncate text-sm font-medium">
+                {currentUser.email}
+              </span>
+            </DropdownHeader>
+
+            <DropdownItem>
+              <Link to="/dashboard?tab=profile">Profile</Link>
+            </DropdownItem>
+            <DropdownDivider />
+            <DropdownItem onClick={handleSignOut}>Sign Out</DropdownItem>
+          </Dropdown>
+        ) : (
+          <Link to="/sign-up">
+            <Button outline className="">
+              Sign Up
+            </Button>
+          </Link>
+        )}
+
+        <NavbarToggle />
       </div>
       <NavbarCollapse>
         <NavbarLink active={path === "/"} as="div">
